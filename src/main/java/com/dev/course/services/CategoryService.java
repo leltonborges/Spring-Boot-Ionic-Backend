@@ -1,5 +1,6 @@
 package com.dev.course.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,9 @@ public class CategoryService {
 		}catch(DataIntegrityViolationException e) {
 			throw new DataIntegrityException("It is not possible to delete, as the object has associations");
 		}
+	}
+	
+	public List<Category> findAll(){
+		return repo.findAll();
 	}
 }
