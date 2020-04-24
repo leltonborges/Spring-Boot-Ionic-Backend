@@ -31,7 +31,7 @@ public class Client implements Serializable{
 	private Integer typeClient;
 
 	@OneToMany(mappedBy = "client")
-	private List<Address> Addresses;
+	private List<Address> addresses = new ArrayList<Address>();;
 	
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
@@ -95,11 +95,11 @@ public class Client implements Serializable{
 	}
 
 	public List<Address> getAddresses() {
-		return Addresses;
+		return addresses;
 	}
 
 	public void setAddresses(List<Address> addresses) {
-		Addresses = addresses;
+		this.addresses = addresses;
 	}
 
 	public Set<String> getPhones() {

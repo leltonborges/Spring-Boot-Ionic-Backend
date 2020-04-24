@@ -107,9 +107,9 @@ public class CoursoMcApplication implements CommandLineRunner{
 		Address add1 = new Address(null, "Rua Lores", "300", "Apto 302", "Jardim", "8465-786", cli1, c1);
 		Address add2 = new Address(null, "Avenida Matos", "105", "Sala 808", "Centro", "3168-653", cli1, c2);
 		
-//		cli1.getAddresses().addAll(Arrays.asList(add1, add2));
-		clientRepository.saveAll(Arrays.asList(cli1));
+		cli1.getAddresses().addAll(Arrays.asList(add1, add2));
 		
+		clientRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(add1, add2));
 		
 		
