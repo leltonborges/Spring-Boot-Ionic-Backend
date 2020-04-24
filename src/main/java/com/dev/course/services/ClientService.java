@@ -32,7 +32,7 @@ public class ClientService {
 	public Client find(Integer id) {
 		Optional<Client> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Not found with id: " + id + " type: " + Client.class.getSimpleName()));
+				"Not found with id: " + id + ", type: " + Client.class.getSimpleName()));
 	}
 
 	public Client update(Client obj) {
@@ -60,7 +60,7 @@ public class ClientService {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException(
-					"It is not possible to delete CLIENT, as the object has associations ID: " + id);
+					"It is not possible to exclude a CLIENT with related ordes, as the object has associations ID: " + id);
 		}
 	}
 
