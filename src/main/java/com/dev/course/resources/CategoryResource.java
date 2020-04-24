@@ -23,7 +23,7 @@ import com.dev.course.services.CategoryService;
 
 @RestController
 @RequestMapping(value = "/categories")
-public class CategoriesResource {
+public class CategoryResource {
 
 	@Autowired
 	private CategoryService service;
@@ -42,8 +42,8 @@ public class CategoriesResource {
 		return ResponseEntity.created(uri).build();
 	}
 
-	@RequestMapping(method = RequestMethod.PUT, value = "{id}")
-	public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO objDTO, @PathVariable Integer id){
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+	public ResponseEntity<Void> update(@PathVariable Integer id, @Valid @RequestBody CategoryDTO objDTO){
 		Category obj = service.fromDTO(objDTO);
 		obj.setId(id);
 		obj = service.update(obj);

@@ -24,6 +24,7 @@ public class Client implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	private String name;
 	private String email;
 	private String cpfOuCnpj;
@@ -50,7 +51,7 @@ public class Client implements Serializable{
 		this.name = name;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.typeClient = typeClient.getCode();
+		this.typeClient = (typeClient == null)? null : typeClient.getCode();
 	}
 
 	public Integer getId() {
