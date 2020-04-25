@@ -11,15 +11,16 @@ import com.dev.course.domain.Request;
 import com.dev.course.services.RequestService;
 
 @RestController
-@RequestMapping(value = "requests")
+@RequestMapping(value = "/requests")
 public class RequestResource {
 
 	@Autowired
 	private RequestService service;
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
-	public ResponseEntity<Request> findById(@PathVariable Integer id){
-		Request req = service.findById(id);
-		return ResponseEntity.ok().body(req);
+	public ResponseEntity<Request> findById(@PathVariable Integer id) {
+		Request prod = service.findById(id);
+		return ResponseEntity.ok().body(prod);
 	}
+
 }

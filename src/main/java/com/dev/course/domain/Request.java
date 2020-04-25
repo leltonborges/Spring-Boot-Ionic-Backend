@@ -100,6 +100,15 @@ public class Request implements Serializable{
 	public void setItens(Set<ItemRequest> itens) {
 		this.itens = itens;
 	}
+	
+	public Double getValorTotal() {
+		double som = 0.0;
+		for(ItemRequest item : itens) {
+			som += item.getSubTotal();
+		}
+		return som;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
