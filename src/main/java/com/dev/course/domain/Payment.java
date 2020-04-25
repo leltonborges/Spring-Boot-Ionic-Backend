@@ -12,9 +12,11 @@ import javax.persistence.OneToOne;
 
 import com.dev.course.domain.enums.StatusPayment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@typePay")
 public abstract class Payment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
