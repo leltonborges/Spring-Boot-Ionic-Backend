@@ -72,7 +72,6 @@ public class ClientService {
 	public Client fromClient(ClientDTO cliDTO) {
 		return new Client(cliDTO.getId(), cliDTO.getName(), cliDTO.getEmail(), null, null);
 	}
-
 	public Client fromClient(ClientNewDTO cliNewDTO) {
 		Client cli = new Client(null, cliNewDTO.getName(), cliNewDTO.getEmail(), cliNewDTO.getCpfOuCnpj(),
 				TypeClient.toEnum(cliNewDTO.getTipo()));
