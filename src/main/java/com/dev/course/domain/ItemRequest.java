@@ -1,6 +1,8 @@
 package com.dev.course.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -80,7 +82,7 @@ public class ItemRequest implements Serializable{
 	}
 
 	public Double getSubTotal() {
-		return (price-discount)*quantity;
+		return (price - discount) * quantity;
 	}
 	
 	@Override
@@ -106,6 +108,21 @@ public class ItemRequest implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+		StringBuilder builder = new StringBuilder();
+		builder.append(getProduct().getName());
+		builder.append(", Qte: ");
+		builder.append(getQuantity());
+		builder.append(", Price unique: ");
+		builder.append(nf.format(getPrice()));
+		builder.append(", subtotal: ");
+		builder.append(nf.format(getSubTotal()));
+		builder.append("\n");
+		return builder.toString();
 	}
 	
 }

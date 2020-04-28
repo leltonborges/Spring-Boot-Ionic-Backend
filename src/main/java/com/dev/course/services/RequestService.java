@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.dev.course.domain.ItemRequest;
 import com.dev.course.domain.PaymentWithBoleto;
-import com.dev.course.domain.Product;
 import com.dev.course.domain.Request;
 import com.dev.course.domain.enums.StatusPayment;
 import com.dev.course.repositories.ItemRequestRepository;
 import com.dev.course.repositories.PaymentRepository;
-import com.dev.course.repositories.ProductRepository;
 import com.dev.course.repositories.RequestRepository;
 import com.dev.course.services.exceptions.ObjectNotFoundException;
 
@@ -31,6 +29,8 @@ public class RequestService {
 	private ProductService productService;
 	@Autowired
 	private ItemRequestRepository itemRequestRepository;
+	@Autowired
+	private ClientService clientService;
 	
 	public Request findById(Integer id) {
 		Optional<Request> req = repo.findById(id);
@@ -42,20 +42,23 @@ public class RequestService {
 	public Request insert(Request obj) {
 		obj.setId(null);
 		obj.setInstant(new Date());
+		obj.setClient(clientService.find(obj.getClient().getId()));
 		obj.getPayment().setStatus(StatusPayment.PENDING);
 		obj.getPayment().setRequest(obj);
-		if(obj.getPayment() instanceof PaymentWithBoleto) {
-			PaymentWithBoleto pay = (PaymentWithBoleto) obj.getPayment();
-			boletoService.fillPaymentoWithBoleto(pay, obj.getInstant());
+		if (obj.getPayment() instanceof PaymentWithBoleto) {
+			PaymentWithBoleto pagto = (PaymentWithBoleto) obj.getPayment();
+			boletoService.fillPaymentoWithBoleto(pagto, obj.getInstant());
 		}
-		obj =repo.save(obj);
+		obj = repo.save(obj);
 		paymentRepository.save(obj.getPayment());
-		for(ItemRequest ir : obj.getItens()) {
-			ir.setDiscount(0.0);
-			ir.setPrice(productService.findById(ir.getProduct().getId()).getPrice());
-			ir.setRequest(obj);
+		for (ItemRequest ip : obj.getItens()) {
+			ip.setDiscount(0.0);
+			ip.setProduct(productService.findById(ip.getProduct().getId()));
+			ip.setPrice(ip.getProduct().getPrice());
+			ip.setRequest(obj);
 		}
 		itemRequestRepository.saveAll(obj.getItens());
+		System.out.println(obj);
 		return obj;
 	}
 
