@@ -1,5 +1,4 @@
 package com.dev.course.security;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,48 +9,37 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.dev.course.domain.enums.Profile;
 
-public class UserSS implements UserDetails{
+public class UserSS implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
 	private String email;
-	private String password;
-	private Collection<? extends GrantedAuthority> authority;
+	private String senha;
+	private Collection<? extends GrantedAuthority> authorities;
 	
 	public UserSS() {
 	}
 	
-	public UserSS(Integer id, String email, String password, Set<Profile> profiles) {
+	public UserSS(Integer id, String email, String senha, Set<Profile> perfis) {
+		super();
 		this.id = id;
 		this.email = email;
-		this.password = password;
-		this.authority = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authority;
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
+		this.senha = senha;
+		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
 	}
 
 	public Integer getId() {
 		return id;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return authorities;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public Collection<? extends GrantedAuthority> getAuthority() {
-		return authority;
+	@Override
+	public String getPassword() {
+		return senha;
 	}
 
 	@Override
@@ -78,5 +66,4 @@ public class UserSS implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
-
 }

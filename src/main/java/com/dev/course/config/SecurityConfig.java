@@ -18,7 +18,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.dev.course.security.JWTAuthenticationFilter;
-import com.dev.course.security.JWTUtils;
+import com.dev.course.security.JWTAuthorizationFilter;
+import com.dev.course.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailService;
 	@Autowired
-	private JWTUtils jwtUtils;
+	private JWTUtil jwtUtils;
 	
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**"
@@ -53,7 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.anyRequest().authenticated();
-		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtils ));
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtils));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtils, userDetailService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
