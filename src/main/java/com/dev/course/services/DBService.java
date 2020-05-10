@@ -20,6 +20,7 @@ import com.dev.course.domain.PaymentWithBoleto;
 import com.dev.course.domain.Product;
 import com.dev.course.domain.Request;
 import com.dev.course.domain.State;
+import com.dev.course.domain.enums.Profile;
 import com.dev.course.domain.enums.StatusPayment;
 import com.dev.course.domain.enums.TypeClient;
 import com.dev.course.repositories.AddressRepository;
@@ -124,13 +125,19 @@ public class DBService {
 		Client cli1 = new Client(null, "Amanda", "lelltwnpereira@gmail.com", "097.560.864-08", TypeClient.PESSOA_FISICA, passDecoder.encode("123"));
 		cli1.getPhones().addAll(Arrays.asList("86464-4646", "94654-5512"));
 
+		Client cli2 = new Client(null, "Ana", "lelton.borges1@gmail.com", "418.464.570-41", TypeClient.PESSOA_FISICA, passDecoder.encode("123"));
+		cli2.addProfile(Profile.ADMIN);
+		cli2.getPhones().addAll(Arrays.asList("8532-4276", "93464-7524"));
+		
 		Address add1 = new Address(null, "Rua Lores", "300", "Apto 302", "Jardim", "8465-786", cli1, c1);
 		Address add2 = new Address(null, "Avenida Matos", "105", "Sala 808", "Centro", "3168-653", cli1, c2);
-
+		Address add3 = new Address(null, "QS 2", "402", "Apto 302", "Sul", "8465-786", cli2, c2);
+		
 		cli1.getAddresses().addAll(Arrays.asList(add1, add2));
+		cli2.getAddresses().addAll(Arrays.asList(add3));
 
-		clientRepository.saveAll(Arrays.asList(cli1));
-		addressRepository.saveAll(Arrays.asList(add1, add2));
+		clientRepository.saveAll(Arrays.asList(cli1, cli2));
+		addressRepository.saveAll(Arrays.asList(add1, add2, add3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		Request rq1 = new Request(null, sdf.parse("2019/12/12 11:34"), cli1, add1);
