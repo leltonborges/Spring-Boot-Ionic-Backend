@@ -6,8 +6,12 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.dev.course.domain.Client;
 import com.dev.course.domain.ItemRequest;
 import com.dev.course.domain.PaymentWithBoleto;
 import com.dev.course.domain.Request;
@@ -15,6 +19,8 @@ import com.dev.course.domain.enums.StatusPayment;
 import com.dev.course.repositories.ItemRequestRepository;
 import com.dev.course.repositories.PaymentRepository;
 import com.dev.course.repositories.RequestRepository;
+import com.dev.course.security.UserSS;
+import com.dev.course.services.exceptions.AuthorizationException;
 import com.dev.course.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -64,4 +70,14 @@ public class RequestService {
 		return obj;
 	}
 
+	public Page<Request> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+		UserSS user = UserService.authenticated();
+		if(user == null) {
+			throw new AuthorizationException("Acesso negago");
+		}
+		Client client = clientService.find(user.getId());
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+
+		return repo.findByClient(client, pageRequest);
+	}
 }
