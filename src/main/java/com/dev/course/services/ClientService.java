@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dev.course.domain.Address;
 import com.dev.course.domain.City;
 import com.dev.course.domain.Client;
+import com.dev.course.domain.enums.Profile;
 import com.dev.course.domain.enums.TypeClient;
 import com.dev.course.dto.ClientDTO;
 import com.dev.course.dto.ClientNewDTO;
 import com.dev.course.repositories.AddressRepository;
 import com.dev.course.repositories.ClientRepository;
+import com.dev.course.security.UserSS;
+import com.dev.course.services.exceptions.AuthorizationException;
 import com.dev.course.services.exceptions.DataIntegrityException;
 import com.dev.course.services.exceptions.ObjectNotFoundException;
 
@@ -33,6 +36,12 @@ public class ClientService {
 	private BCryptPasswordEncoder passEncoder;
 	
 	public Client find(Integer id) {
+		UserSS user = UserService.authenticated();
+		
+		if(user == null || !user.hasRole(Profile.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Client> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Not found with id: " + id + ", type: " + Client.class.getSimpleName()));
