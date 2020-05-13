@@ -1,5 +1,6 @@
 package com.dev.course.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.course.domain.Address;
 import com.dev.course.domain.City;
@@ -34,6 +36,8 @@ public class ClientService {
 	private AddressRepository addressRepository;
 	@Autowired
 	private BCryptPasswordEncoder passEncoder;
+	@Autowired
+	private S3Service s3Service;
 	
 	public Client find(Integer id) {
 		UserSS user = UserService.authenticated();
@@ -104,5 +108,9 @@ public class ClientService {
 	public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
+	}
+	
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 }
