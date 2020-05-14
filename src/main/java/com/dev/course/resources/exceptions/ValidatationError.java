@@ -3,7 +3,7 @@ package com.dev.course.resources.exceptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidatationError extends StandarError {
+public class ValidatationError extends StandardError {
 	private static final long serialVersionUID = 1L;
 	
 	private List<FieldMessege> messeges = new ArrayList<FieldMessege>();
