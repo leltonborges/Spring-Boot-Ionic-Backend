@@ -79,6 +79,19 @@ public class ClientService {
 		return repo.findAll();
 	}
 
+	public Client findByEmail(String email) {
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Profile.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
+		Client cli = repo.findByEmail(email);
+		if(cli == null) {
+			throw new ObjectNotFoundException("Object not found with email: "+ email);
+		}
+		return cli;
+	}
+	
 	public void delete(Integer id) {
 		find(id);
 		try {
