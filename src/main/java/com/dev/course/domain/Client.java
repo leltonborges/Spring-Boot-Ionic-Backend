@@ -37,8 +37,6 @@ public class Client implements Serializable{
 	private String cpfOuCnpj;
 	private Integer typeClient;
 	
-	private String imgaURl;
-	
 	@JsonIgnore
 	public String password;
 
@@ -175,14 +173,5 @@ public class Client implements Serializable{
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	public String getImgaURl() {
-		return imgaURl;
-	}
-
-	public void setImgaURl(String imgaURl) {
-		this.imgaURl = imgaURl;
-	}
-	
+	}	
 }

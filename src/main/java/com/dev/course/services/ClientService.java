@@ -1,10 +1,12 @@
 package com.dev.course.services;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +40,11 @@ public class ClientService {
 	private BCryptPasswordEncoder passEncoder;
 	@Autowired
 	private S3Service s3Service;
+	@Autowired
+	private ImageService imageService;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefNameImage;
 	
 	public Client find(Integer id) {
 		UserSS user = UserService.authenticated();
@@ -116,10 +123,9 @@ public class ClientService {
 			throw new AuthorizationException("Acesso negado");
 		}
 		
-		URI uri = s3Service.uploadFile(multipartFile);
-		Client cli = find(user.getId());
-		cli.setImgaURl(uri.toString());
-		repo.save(cli);
-		return uri;
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		String fileNameString = prefNameImage + user.getId() + ".jpg";
+		
+		return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileNameString, "image");
 	}
 }
