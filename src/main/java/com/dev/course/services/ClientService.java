@@ -112,7 +112,7 @@ public class ClientService {
 	}
 	public Client fromClient(ClientNewDTO cliNewDTO) {
 		Client cli = new Client(null, cliNewDTO.getName(), cliNewDTO.getEmail(), cliNewDTO.getCpfOuCnpj(),
-				TypeClient.toEnum(cliNewDTO.getTipo()), passEncoder.encode(cliNewDTO.getPasswoed()));
+				TypeClient.toEnum(cliNewDTO.getTipo()), passEncoder.encode(cliNewDTO.getPassword()));
 		City city = new City(cliNewDTO.getCidadeId(), null, null);
 		Address addres = new Address(null, cliNewDTO.getLogradouro(), cliNewDTO.getNumero(), cliNewDTO.getComplemento(),
 				cliNewDTO.getBairro(), cliNewDTO.getCep(), cli, city);

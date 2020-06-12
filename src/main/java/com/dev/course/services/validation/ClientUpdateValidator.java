@@ -14,7 +14,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import com.dev.course.domain.Client;
 import com.dev.course.dto.ClientDTO;
 import com.dev.course.repositories.ClientRepository;
-import com.dev.course.resources.exceptions.FieldMessege;
+import com.dev.course.resources.exceptions.FieldMessage;
 
 public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, ClientDTO> {
 	@Autowired
@@ -34,16 +34,16 @@ public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, 
 		Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 		Integer uriId = Integer.parseInt(map.get("id"));
 		
-		List<FieldMessege> list = new ArrayList<>();
+		List<FieldMessage> list = new ArrayList<>();
 		
 		Client aux = clientRepository.findByEmail(objDto.getEmail());
 		if(aux != null && !aux.getId().equals(uriId)) {
-			list.add(new FieldMessege("email", "Email já existente"));
+			list.add(new FieldMessage("email", "Email já existente"));
 		}
 		
-		for (FieldMessege e : list) {
+		for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(e.getMessege()).addPropertyNode(e.getFielName())
+			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
 					.addConstraintViolation();
 		}
 		return list.isEmpty();

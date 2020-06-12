@@ -33,7 +33,7 @@ public class ClientNewDTO implements Serializable{
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String cep;
 	@NotEmpty(message = "Preenchimento obrigatório")
-	private String passwoed;
+	private String password;
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String telefone1;
 	private String telefone2;
@@ -116,12 +116,12 @@ public class ClientNewDTO implements Serializable{
 		this.cep = cep;
 	}
 
-	public String getPasswoed() {
-		return passwoed;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setPasswoed(String passwoed) {
-		this.passwoed = passwoed;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	public String getTelefone1() {

@@ -12,7 +12,7 @@ import com.dev.course.domain.Client;
 import com.dev.course.domain.enums.TypeClient;
 import com.dev.course.dto.ClientNewDTO;
 import com.dev.course.repositories.ClientRepository;
-import com.dev.course.resources.exceptions.FieldMessege;
+import com.dev.course.resources.exceptions.FieldMessage;
 import com.dev.course.services.validation.util.BR;
 
 public class ClientInsertValidator implements ConstraintValidator<ClientInsert, ClientNewDTO> {
@@ -25,22 +25,22 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
 
 	@Override
 	public boolean isValid(ClientNewDTO objDto, ConstraintValidatorContext context) {
-		List<FieldMessege> list = new ArrayList<>();
+		List<FieldMessage> list = new ArrayList<>();
 		if(objDto.getTipo().equals(TypeClient.PESSOA_FISICA.getCode()) && !BR.isValidCPF(objDto.getCpfOuCnpj())) {
-			list.add(new FieldMessege("CpfOuCnpj", "CPF inválido"));
+			list.add(new FieldMessage("CpfOuCnpj", "CPF inválido"));
 		}
 		if(objDto.getTipo().equals(TypeClient.PESSOA_JURIDICA.getCode()) && !BR.isValidCNPJ(objDto.getCpfOuCnpj())) {
-			list.add(new FieldMessege("CpfOuCnpj", "CNPJ inválido"));
+			list.add(new FieldMessage("CpfOuCnpj", "CNPJ inválido"));
 		}
 		
 		Client aux = clientRepository.findByEmail(objDto.getEmail());
 		if(aux != null) {
-			list.add(new FieldMessege("email", "Email já existente"));
+			list.add(new FieldMessage("email", "Email já existente"));
 		}
 		
-		for (FieldMessege e : list) {
+		for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(e.getMessege()).addPropertyNode(e.getFielName())
+			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
 					.addConstraintViolation();
 		}
 		return list.isEmpty();
